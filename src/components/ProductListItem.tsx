@@ -1,25 +1,28 @@
-import { Image, StyleSheet } from "react-native";
+import { Image, Pressable, StyleSheet } from "react-native";
 import { Text, View } from "./Themed";
 import Colors from "../constants/Colors";
 import { Product } from "../types";
+import { Link } from "expo-router";
 
 type ProductListItemProps = {
   product: Product;
 };
-
-const fallbackImg =
+export const fallbackImg =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/peperoni.png";
 
 export default function ProductListItem({ product }: ProductListItemProps) {
   return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: product.image || fallbackImg }}
-        style={styles.image}
-      />
-      <Text style={styles.title}>{product.name}</Text>
-      <Text style={styles.price}>${product.price}</Text>
-    </View>
+    <Link href={`/(tabs)/menu/${product.id}`} style={styles.container} asChild>
+      <Pressable>
+        <Image
+          source={{ uri: product.image || fallbackImg }}
+          style={styles.image}
+          resizeMode="contain"
+        />
+        <Text style={styles.title}>{product.name}</Text>
+        <Text style={styles.price}>${product.price}</Text>
+      </Pressable>
+    </Link>
   );
 }
 
@@ -28,6 +31,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#0f0f0f",
     padding: 10,
     borderRadius: 20,
+    flex: 1,
+    maxWidth: "50%",
   },
   title: {
     fontSize: 17,

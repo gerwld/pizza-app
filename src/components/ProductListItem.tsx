@@ -1,21 +1,8 @@
-import { StyleSheet, Image } from "react-native";
+import { Image, StyleSheet } from "react-native";
+import { Text, View } from "./Themed";
+import Colors from "../constants/Colors";
 
-import EditScreenInfo from "@/src/components/EditScreenInfo";
-import { Text, View } from "@/src/components/Themed";
-import Colors from "@/src/constants/Colors";
-import products from "@/assets/data/products";
-
-const product = products[0];
-
-export default function TabTwoScreen() {
-  return (
-    <View>
-      <ProductListItem />
-    </View>
-  );
-}
-
-function ProductListItem() {
+export default function ProductListItem({ product }) {
   return (
     <View style={styles.container}>
       <Image source={{ uri: product.image }} style={styles.image} />
@@ -27,7 +14,7 @@ function ProductListItem() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: "#0f0f0f",
     padding: 10,
     borderRadius: 20,
   },

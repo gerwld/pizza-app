@@ -1,0 +1,82 @@
+import Colors from "@/constants/Colors";
+import { FontAwesome } from "@expo/vector-icons";
+import { Link, Stack, Tabs } from "expo-router";
+import { Text, View } from "@components/Themed";
+import { Pressable, StyleSheet, useColorScheme } from "react-native";
+
+export default function MenuStack() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <Stack screenOptions={{}}>
+      <Stack.Screen
+        name="index"
+        options={{
+          title: "Menu",
+          headerRight: () => (
+            <Link href="/cart" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <View style={styles.container}>
+                    <Text style={styles.label}>Add</Text>
+                    <FontAwesome
+                      name="plus-square-o"
+                      size={20}
+                      style={{
+                        ...styles.icon,
+                        opacity: pressed ? 0.5 : 1,
+                        color: Colors[colorScheme ?? "light"].text,
+                      }}
+                    />
+                  </View>
+                )}
+              </Pressable>
+            </Link>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="[id]"
+        options={{
+          title: "Menu",
+          headerRight: () => (
+            <Link href="/cart" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <View style={styles.container}>
+                    <Text style={styles.label}>Edit</Text>
+                    <FontAwesome
+                      name="pencil"
+                      size={20}
+                      style={{
+                        ...styles.icon,
+                        opacity: pressed ? 0.5 : 1,
+                        color: Colors[colorScheme ?? "light"].text,
+                      }}
+                    />
+                  </View>
+                )}
+              </Pressable>
+            </Link>
+          ),
+        }}
+      />
+    </Stack>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "transparent",
+  },
+  label: {
+    fontWeight: "500",
+    fontSize: 17,
+  },
+  icon: {
+    marginLeft: 8,
+  },
+});

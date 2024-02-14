@@ -10,6 +10,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
 import { useColorScheme } from "@components/useColorScheme";
+import CartProvider from "@/providers/CartProvider";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -18,7 +19,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "(user)",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -53,10 +54,16 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-      </Stack>
+      <CartProvider>
+        <Stack>
+          <Stack.Screen name="(user)" options={{ headerShown: false }} />
+          <Stack.Screen name="(admin)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="cart"
+            options={{ presentation: "modal", title: "Cart" }}
+          />
+        </Stack>
+      </CartProvider>
     </ThemeProvider>
   );
 }

@@ -1,26 +1,40 @@
 import React, { useState } from "react";
 import { Text, View } from "@components/Themed";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import products from "@assets/data/products";
 import { Image, StyleSheet, Pressable } from "react-native";
-import { fallbackImg } from "@/components/ProductListItem";
+import { fallbackPizzaImage } from "@/constants/Images";
 import Colors from "@/constants/Colors";
 import Button from "@/components/Button";
+import { useCart } from "@/providers/CartProvider";
+import { PizzaSize } from "@/types";
 
 const ProductDetailsScreen = () => {
-  const [size, setSize] = useState("M");
+  const [size, setSize] = useState<PizzaSize>("M");
   const { id } = useLocalSearchParams();
-  const sizes = ["S", "M", "L", "XL"];
+  const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
   const product = products.find((e) => e.id.toString() === id);
+  const { addItem } = useCart();
+  const router = useRouter();
+
+  const addToCart = () => {
+    if (!product) return;
+    addItem(product, size);
+    router.push("/cart");
+  };
 
   if (!product) return <Text>Prdouct not found</Text>;
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: "Details: " + product.name }} />
+      <Stack.Screen
+        options={{
+          title: "Details: " + product.name,
+        }}
+      />
 
       <Image
-        source={{ uri: product.image || fallbackImg }}
+        source={{ uri: product.image || fallbackPizzaImage }}
         style={styles.image}
       />
 
@@ -28,6 +42,7 @@ const ProductDetailsScreen = () => {
       <View style={styles.sizes}>
         {sizes.map((i) => (
           <Pressable
+            key={i}
             onPress={() => setSize(i)}
             style={[styles.size, i === size ? styles.sizeActive : {}]}
           >
@@ -40,7 +55,7 @@ const ProductDetailsScreen = () => {
 
       <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.price}>${product.price}</Text>
-      <Button text="Add to cart" />
+      <Button onPress={addToCart} text="Add to cart" />
     </View>
   );
 };

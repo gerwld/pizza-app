@@ -2,20 +2,25 @@ import { Image, Pressable, StyleSheet } from "react-native";
 import { Text, View } from "./Themed";
 import Colors from "../constants/Colors";
 import { Product } from "../types";
-import { Link } from "expo-router";
+import { Link, useSegments } from "expo-router";
+import { fallbackPizzaImage } from "@/constants/Images";
 
 type ProductListItemProps = {
   product: Product;
 };
-export const fallbackImg =
-  "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/peperoni.png";
 
 export default function ProductListItem({ product }: ProductListItemProps) {
+  const segments = useSegments();
+
   return (
-    <Link href={`/(tabs)/menu/${product.id}`} style={styles.container} asChild>
+    <Link
+      href={`/${segments[0]}/menu/${product.id}`}
+      style={styles.container}
+      asChild
+    >
       <Pressable>
         <Image
-          source={{ uri: product.image || fallbackImg }}
+          source={{ uri: product.image || fallbackPizzaImage }}
           style={styles.image}
           resizeMode="contain"
         />
